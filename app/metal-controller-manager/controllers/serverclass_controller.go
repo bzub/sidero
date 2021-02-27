@@ -9,6 +9,8 @@ import (
 	"fmt"
 
 	"github.com/go-logr/logr"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/cluster-api/util/patch"
@@ -33,6 +35,7 @@ type serverFilter interface {
 	filterCPU([]metalv1alpha1.CPUInformation) serverFilter
 	filterSysInfo([]metalv1alpha1.SystemInformation) serverFilter
 	filterLabels([]map[string]string) serverFilter
+	filterLabelSelector(*metav1.LabelSelector) (serverFilter, error)
 	fetchItems() map[string]metalv1alpha1.Server
 }
 
@@ -132,6 +135,31 @@ func (sr *serverResults) filterLabels(filters []map[string]string) serverFilter 
 	return sr
 }
 
+func (sr *serverResults) filterLabelSelector(ls *metav1.LabelSelector) (serverFilter, error) {
+	if ls == nil {
+		return sr, nil
+	}
+
+	selector, err := metav1.LabelSelectorAsSelector(ls)
+	if err != nil {
+		return sr, fmt.Errorf("invalid label selector: %v", err)
+	}
+
+	if selector.Empty() {
+		return sr, nil
+	}
+
+	for _, server := range sr.items {
+		if !selector.Matches(labels.Set(server.Labels)) {
+			// Remove from results list if it's there since it's
+			// not a match for this qualifier.
+			delete(sr.items, server.ObjectMeta.Name)
+		}
+	}
+
+	return sr, nil
+}
+
 func (sr *serverResults) fetchItems() map[string]metalv1alpha1.Server {
 	return sr.items
 }
@@ -171,6 +199,10 @@ func (r *ServerClassReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error)
 	results = results.filterCPU(sc.Spec.Qualifiers.CPU)
 	results = results.filterSysInfo(sc.Spec.Qualifiers.SystemInformation)
 	results = results.filterLabels(sc.Spec.Qualifiers.LabelSelectors)
+	results, err = results.filterLabelSelector(sc.Spec.Qualifiers.LabelSelector)
+	if err != nil {
+		return ctrl.Result{}, fmt.Errorf("unable to filter servers: %w", err)
+	}
 
 	avail := []string{}
 	used := []string{}

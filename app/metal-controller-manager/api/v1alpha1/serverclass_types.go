@@ -10,9 +10,10 @@ import (
 )
 
 type Qualifiers struct {
-	CPU               []CPUInformation    `json:"cpu,omitempty"`
-	SystemInformation []SystemInformation `json:"systemInformation,omitempty"`
-	LabelSelectors    []map[string]string `json:"labelSelectors,omitempty"`
+	CPU               []CPUInformation      `json:"cpu,omitempty"`
+	SystemInformation []SystemInformation   `json:"systemInformation,omitempty"`
+	LabelSelectors    []map[string]string   `json:"labelSelectors,omitempty"`
+	LabelSelector     *metav1.LabelSelector `json:"labelSelector,omitempty"`
 }
 
 // ServerClassSpec defines the desired state of ServerClass.
