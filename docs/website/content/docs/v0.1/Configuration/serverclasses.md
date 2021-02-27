@@ -7,10 +7,10 @@ weight: 3
 
 Server classes are a way to group distinct server resources.  The "qualifiers"
 key allows the administrator to specify criteria upon which to group these
-servers.  There are currently four keys: `cpu`, `systemInformation`,
-`labelSelectors`, and `labelSelector`.  Each of these keys accepts a list of
-entries.  The top level keys are a "logical AND", while the lists under each
-key are a "logical OR".  Qualifiers that are not specified are not evaluated.
+servers.  There are currently three keys: `cpu`, `systemInformation`, and
+`labelSelector`.  Each of these keys accepts a list of entries.  The top level
+keys are a "logical AND", while the lists under each key are a "logical OR".
+Qualifiers that are not specified are not evaluated.
 
 An example:
 
@@ -26,8 +26,6 @@ spec:
         version: Intel(R) Atom(TM) CPU C3558 @ 2.20GHz
       - manufacturer: Advanced Micro Devices, Inc.
         version: AMD Ryzen 7 2700X Eight-Core Processor
-    labelSelectors:
-      - my-server-label: true
     labelSelector:
       matchLabels:
         foo: bar

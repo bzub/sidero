@@ -34,7 +34,6 @@ type ServerClassReconciler struct {
 type serverFilter interface {
 	filterCPU([]metalv1alpha1.CPUInformation) serverFilter
 	filterSysInfo([]metalv1alpha1.SystemInformation) serverFilter
-	filterLabels([]map[string]string) serverFilter
 	filterLabelSelector(*metav1.LabelSelector) (serverFilter, error)
 	fetchItems() map[string]metalv1alpha1.Server
 }
@@ -95,34 +94,6 @@ func (sr *serverResults) filterSysInfo(filters []metalv1alpha1.SystemInformation
 			if server.Spec.SystemInformation != nil && sysInfo.PartialEqual(server.Spec.SystemInformation) {
 				match = true
 				break
-			}
-		}
-
-		if !match {
-			// Remove from results list if it's there since it's not a match for this qualifier
-			delete(sr.items, server.ObjectMeta.Name)
-		}
-	}
-
-	return sr
-}
-
-func (sr *serverResults) filterLabels(filters []map[string]string) serverFilter {
-	if len(filters) == 0 {
-		return sr
-	}
-
-	for _, server := range sr.items {
-		var match bool
-
-		for _, label := range filters {
-			for labelKey, labelVal := range label {
-				if val, ok := server.ObjectMeta.Labels[labelKey]; ok {
-					if labelVal == val {
-						match = true
-						break
-					}
-				}
 			}
 		}
 
@@ -198,7 +169,6 @@ func (r *ServerClassReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error)
 	// Filter servers down based on qualifiers
 	results = results.filterCPU(sc.Spec.Qualifiers.CPU)
 	results = results.filterSysInfo(sc.Spec.Qualifiers.SystemInformation)
-	results = results.filterLabels(sc.Spec.Qualifiers.LabelSelectors)
 	results, err = results.filterLabelSelector(sc.Spec.Qualifiers.LabelSelector)
 	if err != nil {
 		return ctrl.Result{}, fmt.Errorf("unable to filter servers: %w", err)

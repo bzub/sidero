@@ -253,19 +253,6 @@ func (in *Qualifiers) DeepCopyInto(out *Qualifiers) {
 		*out = make([]SystemInformation, len(*in))
 		copy(*out, *in)
 	}
-	if in.LabelSelectors != nil {
-		in, out := &in.LabelSelectors, &out.LabelSelectors
-		*out = make([]map[string]string, len(*in))
-		for i := range *in {
-			if (*in)[i] != nil {
-				in, out := &(*in)[i], &(*out)[i]
-				*out = make(map[string]string, len(*in))
-				for key, val := range *in {
-					(*out)[key] = val
-				}
-			}
-		}
-	}
 	if in.LabelSelector != nil {
 		in, out := &in.LabelSelector, &out.LabelSelector
 		*out = new(metav1.LabelSelector)

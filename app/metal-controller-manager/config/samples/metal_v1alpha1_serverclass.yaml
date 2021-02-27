@@ -14,9 +14,6 @@ spec:
         serialNumber: Unknown
         skuNumber: Unknown
         version: Unknown
-    labelSelectors:
-      - key1: "val1"
-      - key2: "val2"
     labelSelector:
       matchLabels:
         foo: bar
