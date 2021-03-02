@@ -175,6 +175,10 @@ func (cluster *Cluster) create(ctx context.Context) error {
 		nameservers = constants.Nameservers
 	}
 
+	for _, ns := range nameservers {
+		fmt.Printf("nameserver: %s\n", ns)
+	}
+
 	request := provision.ClusterRequest{
 		Name: cluster.options.Name,
 
