@@ -30,6 +30,7 @@ var bootstrapClusterCmd = &cobra.Command{
 				TalosctlPath: options.TalosctlPath,
 
 				RegistryMirrors: options.RegistryMirrors,
+				Nameservers:     options.Nameservers,
 
 				CPUs:   options.BootstrapCPUs,
 				MemMB:  options.BootstrapMemMB,
@@ -54,4 +55,5 @@ func init() {
 	bootstrapClusterCmd.Flags().StringVar(&options.BootstrapCIDR, "bootstrap-cidr", options.BootstrapCIDR, "bootstrap cluster network CIDR")
 	bootstrapClusterCmd.Flags().StringVar(&options.TalosctlPath, "talosctl-path", options.TalosctlPath, "path to the talosctl (for the QEMU provisioner)")
 	bootstrapClusterCmd.Flags().StringSliceVar(&options.RegistryMirrors, "registry-mirrors", options.RegistryMirrors, "registry mirrors to use")
+	bootstrapClusterCmd.Flags().IPSliceVar(&options.Nameservers, "nameservers", options.Nameservers, "list of nameservers to use")
 }

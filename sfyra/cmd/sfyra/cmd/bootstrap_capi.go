@@ -31,6 +31,7 @@ var bootstrapCAPICmd = &cobra.Command{
 				TalosctlPath: options.TalosctlPath,
 
 				RegistryMirrors: options.RegistryMirrors,
+				Nameservers:     options.Nameservers,
 
 				CPUs:   options.BootstrapCPUs,
 				MemMB:  options.BootstrapMemMB,
@@ -70,4 +71,5 @@ func init() {
 	bootstrapCAPICmd.Flags().StringVar(&options.TalosctlPath, "talosctl-path", options.TalosctlPath, "path to the talosctl (for the QEMU provisioner)")
 	bootstrapCAPICmd.Flags().StringSliceVar(&options.RegistryMirrors, "registry-mirrors", options.RegistryMirrors, "registry mirrors to use")
 	bootstrapCAPICmd.Flags().StringVar(&options.ClusterctlConfigPath, "clusterctl-config", options.ClusterctlConfigPath, "path to the clusterctl config file")
+	bootstrapCAPICmd.Flags().IPSliceVar(&options.Nameservers, "nameservers", options.Nameservers, "list of nameservers to use")
 }

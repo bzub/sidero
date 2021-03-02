@@ -36,4 +36,5 @@ ${PREFIX} "${INTEGRATION_TEST}" test integration \
     --clusterctl-config "${CLUSTERCTL_CONFIG}" \
     --power-simulated-explicit-failure-prob=0.1 \
     --power-simulated-silent-failure-prob=0.0 \
-    ${REGISTRY_MIRROR_FLAGS}
+    ${REGISTRY_MIRROR_FLAGS} \
+    ${EXTRA_SFYRA_FLAGS}

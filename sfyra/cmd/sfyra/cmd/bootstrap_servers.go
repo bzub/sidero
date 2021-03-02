@@ -48,8 +48,10 @@ var bootstrapServersCmd = &cobra.Command{
 func init() {
 	bootstrapCmd.AddCommand(bootstrapServersCmd)
 
+	// net.ParseIP
 	bootstrapServersCmd.Flags().StringVar(&options.ManagementSetName, "management-set-name", options.ManagementSetName, "name for the management VM set")
 	bootstrapServersCmd.Flags().IntVar(&options.ManagementNodes, "management-nodes", options.ManagementNodes, "number of PXE nodes to create for the management rack")
 	bootstrapServersCmd.Flags().StringVar(&options.ManagementCIDR, "management-cidr", options.ManagementCIDR, "management cluster network CIDR")
 	bootstrapServersCmd.Flags().StringVar(&bootSource, "boot-source", "172.24.0.2", "the boot source IP for the iPXE boot")
+	bootstrapServersCmd.Flags().IPSliceVar(&options.Nameservers, "nameservers", options.Nameservers, "list of nameservers to use")
 }

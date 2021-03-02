@@ -8,6 +8,7 @@ package tests
 import (
 	"context"
 	"log"
+	"net"
 	"regexp"
 	"testing"
 
@@ -25,6 +26,7 @@ type Options struct {
 	InstallerImage       string
 
 	RegistryMirrors []string
+	Nameservers     []net.IP
 
 	RunTestPattern string
 }

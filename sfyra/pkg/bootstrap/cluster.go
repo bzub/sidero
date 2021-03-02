@@ -58,6 +58,7 @@ type Options struct {
 	TalosctlPath string
 
 	RegistryMirrors []string
+	Nameservers     []net.IP
 
 	MemMB  int64
 	CPUs   int64
@@ -169,6 +170,11 @@ func (cluster *Cluster) create(ctx context.Context) error {
 		return err
 	}
 
+	nameservers := cluster.options.Nameservers
+	if nameservers == nil || len(nameservers) == 0 {
+		nameservers = constants.Nameservers
+	}
+
 	request := provision.ClusterRequest{
 		Name: cluster.options.Name,
 
@@ -177,7 +183,7 @@ func (cluster *Cluster) create(ctx context.Context) error {
 			CIDR:        *cidr,
 			GatewayAddr: cluster.bridgeIP,
 			MTU:         constants.MTU,
-			Nameservers: constants.Nameservers,
+			Nameservers: nameservers,
 			CNI: provision.CNIConfig{
 				BinPath:  constants.CNIBinPath,
 				ConfDir:  constants.CNIConfDir,

@@ -4,7 +4,10 @@
 
 package cmd
 
-import "fmt"
+import (
+	"fmt"
+	"net"
+)
 
 // Options control the sidero testing.
 type Options struct {
@@ -26,6 +29,7 @@ type Options struct {
 	ControlPlaneProviders   []string
 
 	RegistryMirrors []string
+	Nameservers     []net.IP
 
 	ManagementCIDR    string
 	ManagementSetName string
@@ -80,5 +84,6 @@ func DefaultOptions() Options {
 		ManagementDiskGB: 6,
 
 		TalosctlPath: fmt.Sprintf("_out/%s/talosctl-linux-amd64", TalosRelease),
+		Nameservers:  []net.IP{},
 	}
 }
