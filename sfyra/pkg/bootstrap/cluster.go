@@ -59,6 +59,7 @@ type Options struct {
 
 	RegistryMirrors []string
 	Nameservers     []net.IP
+	TimeServers     []string
 
 	MemMB  int64
 	CPUs   int64
@@ -231,6 +232,7 @@ func (cluster *Cluster) create(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	configBundle.ControlPlaneCfg.MachineConfig.MachineTime.TimeServers = cluster.options.TimeServers
 
 	request.Nodes = append(request.Nodes,
 		provision.NodeRequest{

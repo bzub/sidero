@@ -27,6 +27,7 @@ type Options struct {
 
 	RegistryMirrors []string
 	Nameservers     []net.IP
+	TimeServers     []string
 
 	RunTestPattern string
 }

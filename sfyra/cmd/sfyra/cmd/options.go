@@ -30,6 +30,7 @@ type Options struct {
 
 	RegistryMirrors []string
 	Nameservers     []net.IP
+	TimeServers     []string
 
 	ManagementCIDR    string
 	ManagementSetName string
@@ -84,6 +85,7 @@ func DefaultOptions() Options {
 		ManagementDiskGB: 6,
 
 		TalosctlPath: fmt.Sprintf("_out/%s/talosctl-linux-amd64", TalosRelease),
-		Nameservers:  []net.IP{},
+		Nameservers:  []net.IP{net.ParseIP("8.8.8.8"), net.ParseIP("1.1.1.1")},
+		TimeServers:  []string{"pool.ntp.org"},
 	}
 }

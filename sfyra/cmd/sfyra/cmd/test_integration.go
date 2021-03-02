@@ -38,6 +38,7 @@ var testIntegrationCmd = &cobra.Command{
 
 				RegistryMirrors: options.RegistryMirrors,
 				Nameservers:     options.Nameservers,
+				TimeServers:     options.TimeServers,
 
 				CPUs:   options.BootstrapCPUs,
 				MemMB:  options.BootstrapMemMB,
@@ -106,6 +107,7 @@ var testIntegrationCmd = &cobra.Command{
 
 				RegistryMirrors: options.RegistryMirrors,
 				Nameservers:     options.Nameservers,
+				TimeServers:     options.TimeServers,
 
 				RunTestPattern: runTestPattern,
 			}); !ok {
@@ -132,6 +134,7 @@ func init() {
 	testIntegrationCmd.Flags().StringVar(&options.TalosctlPath, "talosctl-path", options.TalosctlPath, "path to the talosctl (for the QEMU provisioner)")
 	testIntegrationCmd.Flags().StringSliceVar(&options.RegistryMirrors, "registry-mirrors", options.RegistryMirrors, "registry mirrors to use")
 	testIntegrationCmd.Flags().IPSliceVar(&options.Nameservers, "nameservers", options.Nameservers, "list of nameservers to use")
+	testIntegrationCmd.Flags().StringSliceVar(&options.TimeServers, "time-servers", options.TimeServers, "list of time servers to use")
 	testIntegrationCmd.Flags().StringVar(&options.TalosKernelURL, "talos-kernel-url", options.TalosKernelURL, "Talos kernel image URL for Cluster API Environment")
 	testIntegrationCmd.Flags().StringVar(&options.TalosInitrdURL, "talos-initrd-url", options.TalosInitrdURL, "Talos initramfs image URL for Cluster API Environment")
 	testIntegrationCmd.Flags().StringVar(&options.ClusterctlConfigPath, "clusterctl-config", options.ClusterctlConfigPath, "path to the clusterctl config file")
