@@ -18,6 +18,7 @@ import (
 	taloscluster "github.com/talos-systems/talos/pkg/cluster"
 	"github.com/talos-systems/talos/pkg/cluster/check"
 	clientconfig "github.com/talos-systems/talos/pkg/machinery/client/config"
+	"github.com/talos-systems/talos/pkg/machinery/config/types/v1alpha1"
 	"github.com/talos-systems/talos/pkg/machinery/config/types/v1alpha1/bundle"
 	"github.com/talos-systems/talos/pkg/machinery/config/types/v1alpha1/generate"
 	"github.com/talos-systems/talos/pkg/machinery/config/types/v1alpha1/machine"
@@ -231,6 +232,10 @@ func (cluster *Cluster) create(ctx context.Context) error {
 		}))
 	if err != nil {
 		return err
+	}
+
+	if configBundle.ControlPlaneCfg.MachineConfig.MachineTime == nil {
+		configBundle.ControlPlaneCfg.MachineConfig.MachineTime = &v1alpha1.TimeConfig{}
 	}
 	configBundle.ControlPlaneCfg.MachineConfig.MachineTime.TimeServers = cluster.options.TimeServers
 
