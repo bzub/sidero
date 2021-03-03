@@ -234,10 +234,13 @@ func (cluster *Cluster) create(ctx context.Context) error {
 		return err
 	}
 
-	if configBundle.ControlPlaneCfg.MachineConfig.MachineTime == nil {
-		configBundle.ControlPlaneCfg.MachineConfig.MachineTime = &v1alpha1.TimeConfig{}
+	configBundle.ControlPlaneCfg = &v1alpha1.Config{
+		MachineConfig: &v1alpha1.MachineConfig{
+			MachineTime: &v1alpha1.TimeConfig{
+				TimeServers: cluster.options.TimeServers,
+			},
+		},
 	}
-	configBundle.ControlPlaneCfg.MachineConfig.MachineTime.TimeServers = cluster.options.TimeServers
 
 	request.Nodes = append(request.Nodes,
 		provision.NodeRequest{
