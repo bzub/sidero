@@ -177,10 +177,6 @@ func (cluster *Cluster) create(ctx context.Context) error {
 		nameservers = constants.Nameservers
 	}
 
-	for _, ns := range nameservers {
-		fmt.Printf("nameserver: %s\n", ns)
-	}
-
 	request := provision.ClusterRequest{
 		Name: cluster.options.Name,
 
@@ -234,11 +230,16 @@ func (cluster *Cluster) create(ctx context.Context) error {
 		return err
 	}
 
-	configBundle.ControlPlaneCfg = &v1alpha1.Config{
-		MachineConfig: &v1alpha1.MachineConfig{
-			MachineTime: &v1alpha1.TimeConfig{
-				TimeServers: cluster.options.TimeServers,
-			},
+	// configBundle.ControlPlaneCfg = &v1alpha1.Config{
+	// 	MachineConfig: &v1alpha1.MachineConfig{
+	// 		MachineTime: &v1alpha1.TimeConfig{
+	// 			TimeServers: cluster.options.TimeServers,
+	// 		},
+	// 	},
+	// }
+	configBundle.ControlPlaneCfg.MachineConfig = &v1alpha1.MachineConfig{
+		MachineTime: &v1alpha1.TimeConfig{
+			TimeServers: cluster.options.TimeServers,
 		},
 	}
 
